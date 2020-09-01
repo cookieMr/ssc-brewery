@@ -48,10 +48,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin(loginConfigure -> loginConfigure.loginProcessingUrl("/login")
                         .loginPage("/").permitAll()
                         .successForwardUrl("/")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/?error"))
                 .logout(logoutConfigure ->
                         logoutConfigure.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                                .logoutSuccessUrl("/").permitAll())
+                                .logoutSuccessUrl("/?logout").permitAll())
                 .httpBasic()
                 .and()
                 .headers().frameOptions().sameOrigin();
