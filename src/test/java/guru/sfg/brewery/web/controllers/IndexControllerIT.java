@@ -41,7 +41,7 @@ class IndexControllerIT extends AbstractBaseIT {
     BeerOrderService beerOrderService;
 
     private static @NotNull Stream<String> publicUrls() {
-        return Stream.of("/", "/login", "/beers/find");
+        return Stream.of("/", "/beers/find");
     }
 
     @ParameterizedTest
