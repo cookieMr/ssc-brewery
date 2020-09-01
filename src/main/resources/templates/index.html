@@ -19,6 +19,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{fragments/layout :: layout (~{::body},'home')}">
 <head>
     <meta charset="UTF-8"/>
@@ -39,7 +40,12 @@
         </form>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-md-12">
+        <p sec:authorize="isAuthenticated()" th:text="'Welcome: ' + ${#authentication?.principal?.username}">User</p>
+        <p><a th:href="@{/logout}">Logout</a></p>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
         <img class="img-responsive" src="../static/resources/images/brewery.png"
