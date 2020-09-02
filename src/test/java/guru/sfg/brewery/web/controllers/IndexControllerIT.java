@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import java.util.stream.Stream;
 
@@ -45,6 +46,9 @@ class IndexControllerIT extends AbstractBaseIT {
     @MockBean
     UserDetailsService userDetailsService;
 
+    @MockBean
+    PersistentTokenRepository persistentTokenRepository;
+
     private static @NotNull Stream<String> publicUrls() {
         return Stream.of("/", "/beers/find");
     }
@@ -63,7 +67,7 @@ class IndexControllerIT extends AbstractBaseIT {
                 .andExpect(status().isOk());
     }
 
-    @Disabled("TODO: remember me broke this test for some reason, investigate it later")
+    @Disabled("TODO: remember me broke this test for some reason, investigate it later; probably mockbean is an issue")
     @ParameterizedTest
     @MethodSource("publicUrls")
     void getPublicUrlWithHttpBasicAuth(@NotNull String url) throws Exception {

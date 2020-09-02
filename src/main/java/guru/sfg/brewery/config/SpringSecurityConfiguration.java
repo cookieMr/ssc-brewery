@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
             {"/", "/login", "/beers/find", "/webjars/**", "/resources/**"};
 
     private final UserDetailsService userDetailsService;
+    private final PersistentTokenRepository persistentTokenRepository;
 
     /**
      * This bean is needed for SPeL.
@@ -31,7 +33,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
      * @return security evaluation context extension
      */
     @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+    public @NotNull SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
 
@@ -60,7 +62,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 .logoutSuccessUrl("/?logout").permitAll())
                 .httpBasic()
                 .and()
-                .rememberMe().key("cookieMr").userDetailsService(userDetailsService)
+                .rememberMe().tokenRepository(persistentTokenRepository).userDetailsService(userDetailsService)
                 .and()
                 .headers().frameOptions().sameOrigin();
     }
