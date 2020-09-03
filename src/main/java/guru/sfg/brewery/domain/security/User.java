@@ -7,13 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Singular;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,7 +28,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -102,4 +108,38 @@ public class User implements UserDetails, CredentialsContainer {
         password = null;
     }
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
+
+    public void setCreatedDate(@Nullable Timestamp createdDate) {
+        this.createdDate = Optional.ofNullable(createdDate)
+                .map(Timestamp::clone)
+                .map(Timestamp.class::cast)
+                .orElse(null);
+    }
+
+    public @Nullable Timestamp getCreatedDate() {
+        return Optional.ofNullable(createdDate)
+                .map(Timestamp::clone)
+                .map(Timestamp.class::cast)
+                .orElse(null);
+    }
+
+    public void setLastModifiedDate(@Nullable Timestamp lastModifiedDate) {
+        this.lastModifiedDate = Optional.ofNullable(lastModifiedDate)
+                .map(Timestamp::clone)
+                .map(Timestamp.class::cast)
+                .orElse(null);
+    }
+
+    public @Nullable Timestamp getLastModifiedDate() {
+        return Optional.ofNullable(lastModifiedDate)
+                .map(Timestamp::clone)
+                .map(Timestamp.class::cast)
+                .orElse(null);
+    }
 }

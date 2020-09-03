@@ -3,8 +3,11 @@ package guru.sfg.brewery.config;
 import guru.sfg.brewery.security.BreweryPasswordEncoderFactories;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -65,6 +68,12 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe().tokenRepository(persistentTokenRepository).userDetailsService(userDetailsService)
                 .and()
                 .headers().frameOptions().sameOrigin();
+    }
+
+    @Bean
+    public @NotNull AuthenticationEventPublisher authenticationEventPublisher(
+            @NotNull ApplicationEventPublisher publisher) {
+        return new DefaultAuthenticationEventPublisher(publisher);
     }
 
 }
