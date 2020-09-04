@@ -49,6 +49,14 @@ public class User implements UserDetails, CredentialsContainer {
     private String username;
     private String password;
 
+    @Builder.Default
+    private Boolean useGoogle2fa = false;
+
+    private String google2faSecret;
+
+    @Transient
+    private Boolean google2faRequired = true;
+
     @Singular
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",

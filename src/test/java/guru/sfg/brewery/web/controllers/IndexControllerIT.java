@@ -1,8 +1,10 @@
 package guru.sfg.brewery.web.controllers;
 
+import com.warrenstrange.googleauth.IGoogleAuthenticator;
 import guru.sfg.brewery.repositories.BeerInventoryRepository;
 import guru.sfg.brewery.repositories.BeerRepository;
 import guru.sfg.brewery.repositories.CustomerRepository;
+import guru.sfg.brewery.repositories.security.UserRepository;
 import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.services.BeerService;
 import guru.sfg.brewery.services.BreweryService;
@@ -48,6 +50,12 @@ class IndexControllerIT extends AbstractBaseIT {
 
     @MockBean
     PersistentTokenRepository persistentTokenRepository;
+
+    @MockBean
+    UserRepository userRepository;
+
+    @MockBean
+    IGoogleAuthenticator googleAuthenticator;
 
     private static @NotNull Stream<String> publicUrls() {
         return Stream.of("/", "/beers/find");
